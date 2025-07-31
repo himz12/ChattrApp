@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import http from 'http';
-import authRoutes from '../routes/auth.routes.js'; // ✅ CORRECT
-import messageRoutes from '../routes/message.routes.js'; // ✅ CORRECT
-import { setupSocket } from '../middleware/socket.middleware.js'; // ✅ CORRECT
-import { connectDB } from '../lib/db.js'; // ✅ CORRECT
+import authRoutes from '../routes/auth.routes.js';
+import messageRoutes from '../routes/message.routes.js';
+import { setupSocket } from '../middleware/socket.middleware.js';
+import { connectDB } from '../lib/db.js';
 
 dotenv.config();
 const app = express();
@@ -29,8 +29,7 @@ if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "./frontend/dist");
   app.use(express.static(frontendPath));
 
-  app.get("*", (req, res, next) => {
-    if (req.originalUrl.startsWith("/api/")) return next();
+  app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
@@ -38,7 +37,6 @@ if (process.env.NODE_ENV === "production") {
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
-// ✅ Setup socket.io using your socket.middleware.js
 setupSocket(server);
 
 server.listen(PORT, () => {

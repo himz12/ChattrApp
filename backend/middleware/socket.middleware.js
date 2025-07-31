@@ -6,21 +6,21 @@ let onlineUsers = [];
 export const setupSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: process.env.NODE_ENV === "production" ? "/api" : "http://localhost:5173",
       credentials: true
     }
   });
 
   io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
-    if (userId && !onlineUsers.includes(userId)) {
-      onlineUsers.push(userId);
+    if (userId && !onlineUsers.includes(String(userId))) {
+      onlineUsers.push(String(userId));
     }
 
     io.emit("onlineUsers", onlineUsers);
 
     socket.on("disconnect", () => {
-      onlineUsers = onlineUsers.filter(id => id !== userId);
+      onlineUsers = onlineUsers.filter(id => id !== String(userId));
       io.emit("onlineUsers", onlineUsers);
     });
   });
