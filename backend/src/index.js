@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(frontendPath));
 
   // Fixed wildcard route
-  app.get('*', (req, res) => {
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
   });
 }
