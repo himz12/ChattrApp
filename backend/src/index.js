@@ -1,21 +1,23 @@
-// app.js
+// index.js
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
-import authRoutes from './routes/auth.routes.js';
-import messageRoutes from './routes/message.routes.js';
+import http from 'http';
+import authRoutes from '../routes/auth.routes.js';
+import messageRoutes from '../routes/message.routes.js';
+import { setupSocket } from '../middleware/socket.middleware.js'; // ✅ use your socket setup
+import { connectDB } from '../lib/db.js';
 
 dotenv.config();
 const app = express();
 const __dirname = path.resolve();
 
-// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ adjust this if deploying
+  origin: "http://localhost:5173",
   credentials: true
 }));
 
@@ -34,4 +36,13 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-export default app;
+const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
+
+// ✅ Setup socket.io using your socket.middleware.js
+setupSocket(server);
+
+server.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  connectDB();
+});
