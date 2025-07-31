@@ -1,12 +1,13 @@
 import user from "../models/user.models.js"
 import message from "../models/msg.models.js"
-import cloudnary from "../lib/cloudnary.js"
+import cloudinary from "../lib/cloudnary.js"
 
 export const getUsersForSidebar = async(req,res)=>{
     try{
         const loggeduserID = req.user._id
-        const filteresusr = await user.find({_id:{$ne:loggeduserID}}).select('-password')
-        res.status(200).json(filteresusr)
+        const filteredUsers = await user.find({ _id: { $ne: loggeduserID } }).select('-password');
+        res.status(200).json(filteredUsers);
+
     }
     catch(error){
         console.error('Error in getuserid: ',error.message)
@@ -41,7 +42,7 @@ export const sendMessages = async(req,res)=>{
 
         let imgUrl;
         if(image){
-            const uploadResponse = await cloudnary.uploader.upload(image)
+            const uploadResponse = await cloudinary.uploader.upload(image)
             imgUrl = uploadResponse.secure_url;
         }
 

@@ -1,61 +1,37 @@
+// app.js
 import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import authRoutes from "../routes/auth.routes.js";
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { connectDB } from '../lib/db.js';
 import cors from 'cors';
 import path from 'path';
-import messageRoutes from '../routes/message.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import messageRoutes from './routes/message.routes.js';
 
 dotenv.config();
 const app = express();
 const __dirname = path.resolve();
-const server = http.createServer(app);  // ✅ Use HTTP server
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    credentials: true
-  }
-});
-
-// Socket connection handling
-io.on("connection", (socket) => {
-  console.log("Socket connected:", socket.id);
-
-  socket.on("disconnect", () => {
-    console.log("Socket disconnected:", socket.id);
-  });
-});
-
-const port = process.env.PORT;
-
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "http://localhost:5173", // ✅ adjust this if deploying
   credentials: true
 }));
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 
+// Serve frontend in production
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../frontend/dist");
+  const frontendPath = path.join(__dirname, "./frontend/dist");
   app.use(express.static(frontendPath));
 
-  // Serve frontend only for non-API routes
   app.get("*", (req, res, next) => {
-    if (req.originalUrl.startsWith("/api/")) {
-      return next(); // let backend handle API
-    }
+    if (req.originalUrl.startsWith("/api/")) return next();
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
-server.listen(port, () => {
-  console.log("Server is running on port", port);
-  connectDB();
-});
+export default app;
