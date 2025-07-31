@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import http from 'http';
-import authRoutes from '../../routes/auth.routes.js';       // ✅ CORRECT
-import messageRoutes from '../../routes/message.routes.js'; // ✅ CORRECT
-import { setupSocket } from '../../middleware/socket.middleware.js'; // ✅ CORRECT
-import { connectDB } from '../../lib/db.js';
+import authRoutes from '../routes/auth.routes.js'; // ✅ CORRECT
+import messageRoutes from '../routes/message.routes.js'; // ✅ CORRECT
+import { setupSocket } from '../middleware/socket.middleware.js'; // ✅ CORRECT
+import { connectDB } from '../lib/db.js'; // ✅ CORRECT
 
 dotenv.config();
 const app = express();
