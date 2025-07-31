@@ -6,8 +6,8 @@ import cors from 'cors';
 import path from 'path';
 import http from 'http';
 import authRoutes from '../routes/auth.routes.js';
-import messageRoutes from '../routes/message.routes.js';
-import { setupSocket } from '../middleware/socket.middleware.js'; // ✅ use your socket setup
+import authRoutes from '../../routes/auth.routes.js'; 
+import messageRoutes from '../../routes/message.routes.js';
 import { connectDB } from '../lib/db.js';
 
 dotenv.config();
