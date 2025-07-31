@@ -1,14 +1,13 @@
-// index.js
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import http from 'http';
-import authRoutes from '../routes/auth.routes.js';
-import authRoutes from '../../routes/auth.routes.js'; 
-import messageRoutes from '../../routes/message.routes.js';
-import { connectDB } from '../lib/db.js';
+import authRoutes from '../../routes/auth.routes.js';       // ✅ CORRECT
+import messageRoutes from '../../routes/message.routes.js'; // ✅ CORRECT
+import { setupSocket } from '../../middleware/socket.middleware.js'; // ✅ CORRECT
+import { connectDB } from '../../lib/db.js';
 
 dotenv.config();
 const app = express();
