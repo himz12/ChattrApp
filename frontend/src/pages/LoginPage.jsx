@@ -95,8 +95,8 @@ const LoginPage = () => {
       </div>
 
       <AuthImagePattern
-      title="Lets Chat Again"
-      subtitle="Ready to pick up where you left off?"/>
+      title={"Lets Chat Again"}
+      subtitle={"Ready to pick up where you left off?"}/>
     </div>
 )}
 

@@ -19,7 +19,7 @@ const userSc = new mongoose.Schema({
         type:String,
         default:""
     },
-},{timestamps: true})
+},{timestamps: true});
 
 const user = mongoose.model("User",userSc)
 

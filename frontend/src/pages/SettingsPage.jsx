@@ -1,4 +1,4 @@
-import React from 'react'
+import { THEMES } from "../constants";
 import { useThemeStore } from '../store/useThemeStore'
 import { Send } from 'lucide-react';
 
@@ -6,14 +6,6 @@ const PREVIEW_MESSAGES = [
   { id: 1, content: "Bro I just woke up and it's 2 PM 😭", isSent: false },
   { id: 2, content: "Living the dream, I see 😂", isSent: true }
 ]
-
-const THEMES = [
-  "light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave",
-  "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua",
-  "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk",
-  "autumn", "business", "acid", "lemonade", "night", "coffee", "winter", "dim",
-  "nord", "sunset"
-];
 
 const SettingsPage = () => {
   const { theme, setTheme } = useThemeStore();

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import HomePage from './pages/HomePage';
@@ -11,8 +10,8 @@ import { useAuthStore } from './store/useAuthStore.js';
 import { useThemeStore } from './store/useThemeStore.js';
 import {Loader} from "lucide-react"
 import {Toaster} from "react-hot-toast"
-function App() {
-  const {authUser,checkAuth,isCheckingAuth} = useAuthStore()
+const App=()=> {
+  const {authUser,checkAuth,isCheckingAuth,onlineUsers} = useAuthStore()
   const {theme} = useThemeStore()
 
   useEffect(()=>{

@@ -12,7 +12,7 @@ export const useChatStore = create((set, get)=>({
     getUsers: async () =>{
         set({isUsersLoading:true});
         try{
-            const res = await axiosInstance.get("/message/users")
+            const res = await axiosInstance.get("/message/user")
             set({users:res.data})
         } catch(error){
             toast.error(error.response.data.message)
@@ -35,9 +35,8 @@ export const useChatStore = create((set, get)=>({
 
     sendMessage: async (messageData) => {
         const { selectedUser, messages } = get();
-        const receiverId = selectedUser._id;
         try {
-          const res = await axiosInstance.post(`/message/send/${receiverId}`, messageData); 
+          const res = await axiosInstance.post(`/message/send/${selectedUser._id}`, messageData);
           set({ messages: [...messages, res.data] });
         } catch (error) {
           toast.error(error.response.data.message);
@@ -45,24 +44,25 @@ export const useChatStore = create((set, get)=>({
       },
     
     subscribeToMessages: () => {
-      const { selectedUser } = get();
-      const socket = get().socket || useAuthStore.getState().socket; // safer
-
-      if (!selectedUser || !socket) return;
-
-      socket.on("newMessage", (newMessage) => {
-        if (newMessage.senderId !== selectedUser._id) return;
-
-        set({ messages: [...get().messages, newMessage] });
-      });
-    },
-
-    unsubscribeFromMessages: () => {
-      const socket = get().socket || useAuthStore.getState().socket;
-      if (socket) {
+        const { selectedUser } = get();
+        if (!selectedUser) return;
+    
+        const socket = useAuthStore.getState().socket;
+    
+        socket.on("newMessage", (newMessage) => {
+          const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
+          if (!isMessageSentFromSelectedUser) return;
+    
+          set({
+            messages: [...get().messages, newMessage],
+          });
+        });
+      },
+    
+      unsubscribeFromMessages: () => {
+        const socket = useAuthStore.getState().socket;
         socket.off("newMessage");
-      }
-    },
+      },
 
 
 

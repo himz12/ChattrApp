@@ -5,6 +5,7 @@ const ProfilePage = () => {
   const {authUser, isUpdatingProfile, updateProfile}=useAuthStore()
 
   const[selectedImg,setSelecetedImg] = useState(null);
+  
   const imgUpload = async(e) =>{
     const file = e.target.files[0];
     if(!file) return;
